@@ -1,5 +1,51 @@
-const Person = require('./person')
+// person bits below as a reminder of the Common JS method of pulling in a module
+// const Person = require('./person');
 
-const person1 = new Person('Dominic','Midlane');
+// const person1 = new Person('Dominic','Midlane');
+// console.log(person1.greeting());
 
-console.log(person1.greeting());
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
+
+const server = http.createServer((request, response) => {
+    if (request.url == '/') {
+        fs.readFile(
+            path.join(__dirname, 'public', 'index.html'),
+                (err, content) => {
+                    if (err) throw err;
+                    response.writeHead(200, { 'Content-Type': 'text/html'});
+                    response.end(content);
+                }
+            );
+    }
+    
+    if (request.url == '/about') {
+        fs.readFile(
+            path.join(__dirname, 'public', 'about.html'),
+                (err, content) => {
+                    if (err) throw err;
+                    response.writeHead(200, { 'Content-Type': 'text/html'});
+                    response.end(content);
+                }
+            );
+    }
+    // you would likely use Express js to create an API rather than node
+    if (request.url == '/api/users') {
+        const users = [
+            {name: 'Joe Bloggs', age: 40},
+            {name: 'Jane Diggity', age:30}
+        ];
+
+        response.writeHead(200, { 'Content-Type': 'application/json'});
+        response.end(JSON.stringify(users));
+    }
+
+        
+});
+
+// process.env.PORT is looking at environment variables so consumer could overwite port
+const PORT = process.env.PORT || 5000; 
+
+server.listen(PORT, () => console.log(`Sever running on port: ${PORT}`));
+
