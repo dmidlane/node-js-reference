@@ -110,3 +110,6 @@ server.listen(PORT, () => console.log(`Sever running on port: ${PORT}`));
 // heroku deployment
 // make sure PORT constant is set to process.env.PORT as above
 // make sure the package.json has a start script calling node not nodemon
+// would normally exclude all the test code from being deployed
+// but I want it in the repo for notes
+// install heroku cli and log in >heroku login
